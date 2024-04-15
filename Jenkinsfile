@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'rabiga8/group-image'
     }
     stages {
-        stage('1. Checkout') {
+        stage('Checkout') {
             steps {
                 // Check out the source code from GitHub
                 sh "git clone https://github.com/rabiga8/spring-project.git"
@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('2. Test') {
+        stage('Test') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
                          jdk: '', maven: 'maven', 
@@ -25,7 +25,7 @@ pipeline {
             }
         }
 
-        stage('Verify') {
+        stage('Code coverage analysis') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
                          jdk: '', maven: 'maven', 
@@ -33,13 +33,12 @@ pipeline {
                          traceability: true) {
                     
                 // Add a step for your project's build tool (e.g., Maven)
-                // Run tests with JaCoCo code coverage
                 sh 'mvn clean verify'
                 }
             }
         }
 
-        stage('Static Analysis Checkstyle') {
+        stage('Code static analysis') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
                          jdk: '', maven: 'maven', 
@@ -52,7 +51,7 @@ pipeline {
             }
         }
         
-        stage('3. Build Maven Project') {
+        stage('Build Maven Project') {
             steps {
                withMaven(globalMavenSettingsConfig: '', 
                          jdk: '', maven: 'maven', 
@@ -63,14 +62,14 @@ pipeline {
             }
         }
         
-        stage('4. Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 // Build Docker image
                 sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
             }
         }
         
-        stage('5. Dockerhub Login') {
+        stage('Dockerhub Login') {
             steps {
                 // Authenticate with Docker Hub using credentials
                 withCredentials([
@@ -89,7 +88,7 @@ pipeline {
             }
         }
         
-        stage('6. Dockerhub Push') {
+        stage('Dockerhub Push') {
             steps {
                 // Push Docker image to Docker Hub
                 sh 'docker push rabiga8/group-image:latest'
