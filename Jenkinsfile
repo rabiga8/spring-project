@@ -39,6 +39,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Static Analysis Checkstyle') {
+            steps {
+                // Run Checkstyle
+                sh 'mvn checkstyle:checkstyle'
+            }
+        }
         
         stage('3. Build Maven Project') {
             steps {
