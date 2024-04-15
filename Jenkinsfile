@@ -9,7 +9,7 @@ pipeline {
             steps {
                 // Check out the source code from GitHub
                 git 'https://github.com/rabiga8/spring-project.git'
-                sh "git checkout main"
+                // sh "git checkout main"
             }
         }
         
