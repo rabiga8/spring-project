@@ -50,11 +50,11 @@ pipeline {
             }
         }
         
-        // stage('5. Dockerhub Push') {
-        //     steps {
-        //         // Push Docker image to Docker Hub
-        //         sh 'docker push rabiga8/group-image:latest'
-        //     }
-        // }
+        stage('5. Dockerhub Push') {
+            steps {
+                // Push Docker image to Docker Hub
+                sh 'docker push rabiga8/group-image:latest'
+            }
+        }
     }
 }
