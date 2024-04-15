@@ -42,6 +42,11 @@ pipeline {
 
         stage('Static Analysis Checkstyle') {
             steps {
+                withMaven(globalMavenSettingsConfig: '', 
+                         jdk: '', maven: 'maven', 
+                         mavenSettingsConfig: '', 
+                         traceability: true) {
+                    
                 // Run Checkstyle
                 sh 'mvn checkstyle:checkstyle'
             }
