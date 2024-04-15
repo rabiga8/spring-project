@@ -49,6 +49,7 @@ pipeline {
                     
                 // Run Checkstyle
                 sh 'mvn checkstyle:checkstyle'
+                }
             }
         }
         
