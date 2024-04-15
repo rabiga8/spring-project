@@ -22,6 +22,7 @@ pipeline {
                     
                 // Add a step for your project's build tool (e.g., Maven)
                 sh 'mvn test'
+                }
             }
         }
         
