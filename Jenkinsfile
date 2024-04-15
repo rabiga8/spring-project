@@ -8,8 +8,8 @@ pipeline {
         stage('1. Checkout') {
             steps {
                 // Check out the source code from GitHub
-                git 'https://github.com/rabiga8/devops-lab3.git'
-                sh "git checkout jenkins"
+                git 'https://github.com/rabiga8/spring-project.git'
+                sh "git checkout main"
             }
         }
         
