@@ -31,24 +31,24 @@ pipeline {
             }
         }
         
-        // stage('4. Docker Login') {
-        //     steps {
-        //         // Authenticate with Docker Hub using credentials
-        //         withCredentials([
-        //             usernamePassword(
-        //                 credentialsId: DOCKER_CREDENTIALS_ID, 
-        //                 passwordVariable: 'DOCKER_PASSWORD', 
-        //                 usernameVariable: 'DOCKER_USERNAME')]) {
-        //             sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-        //         }
+        stage('4. Dockerhub Login') {
+            steps {
+                // Authenticate with Docker Hub using credentials
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: DOCKER_CREDENTIALS_ID, 
+                        passwordVariable: 'DOCKER_PASSWORD', 
+                        usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                }
                 
-        //         // Build Docker image
-        //         sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
+                // Build Docker image again
+                sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
                 
-        //         // Tag the Docker image with Docker Hub repository name
-        //         sh 'docker tag rabiga8/rabiga_r_image rabiga8/rabiga_r_image:latest'
-        //     }
-        // }
+                // Tag the Docker image with Docker Hub repository name
+                sh 'docker tag rabiga8/group-image rabiga8/group-image:latest'
+            }
+        }
         
         // stage('5. Docker Push') {
         //     steps {
