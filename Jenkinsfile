@@ -15,6 +15,11 @@ pipeline {
 
         stage('2. Test') {
             steps {
+                withMaven(globalMavenSettingsConfig: '', 
+                         jdk: '', maven: 'maven', 
+                         mavenSettingsConfig: '', 
+                         traceability: true) {
+                    
                 // Add a step for your project's build tool (e.g., Maven)
                 sh 'mvn test'
             }
