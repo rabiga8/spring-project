@@ -12,8 +12,15 @@ pipeline {
                 sh "git checkout main"
             }
         }
+
+        stage('2. Test') {
+            steps {
+                // Add a step for your project's build tool (e.g., Maven)
+                sh 'mvn test'
+            }
+        }
         
-        stage('2. Build Maven Project') {
+        stage('3. Build Maven Project') {
             steps {
                withMaven(globalMavenSettingsConfig: '', 
                          jdk: '', maven: 'maven', 
@@ -24,14 +31,14 @@ pipeline {
             }
         }
         
-        stage('3. Build Docker Image') {
+        stage('4. Build Docker Image') {
             steps {
                 // Build Docker image
                 sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
             }
         }
         
-        stage('4. Dockerhub Login') {
+        stage('5. Dockerhub Login') {
             steps {
                 // Authenticate with Docker Hub using credentials
                 withCredentials([
@@ -50,7 +57,7 @@ pipeline {
             }
         }
         
-        stage('5. Dockerhub Push') {
+        stage('6. Dockerhub Push') {
             steps {
                 // Push Docker image to Docker Hub
                 sh 'docker push rabiga8/group-image:latest'
