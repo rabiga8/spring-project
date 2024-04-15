@@ -25,6 +25,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Verify') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', 
+                         jdk: '', maven: 'maven', 
+                         mavenSettingsConfig: '', 
+                         traceability: true) {
+                    
+                // Add a step for your project's build tool (e.g., Maven)
+                // Run tests with JaCoCo code coverage
+                sh 'mvn clean verify'
+                }
+            }
+        }
         
         stage('3. Build Maven Project') {
             steps {
