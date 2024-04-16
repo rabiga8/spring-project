@@ -94,8 +94,9 @@ pipeline {
                          jdk: '', maven: 'maven', 
                          mavenSettingsConfig: '', 
                          traceability: true) {
-                // Add a step for your project’s build tool to release your artifact
+                // Add a step for your project’s build tool to release an artifact
                 sh 'mvn deploy'
+                }
             }
         }
         
