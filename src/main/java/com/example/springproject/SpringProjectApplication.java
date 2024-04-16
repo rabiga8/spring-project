@@ -11,6 +11,8 @@ public class SpringProjectApplication {
 		System.out.println("Hello, Group Project is running!");
 
 		System.out.println("Bug-fix example");
+
+		System.out.println("Bug-fix second example");
 	}
 
 }
