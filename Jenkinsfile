@@ -87,6 +87,17 @@ pipeline {
                 sh 'docker tag rabiga8/group-image rabiga8/group-image:latest'
             }
         }
+
+        stage('Deliver') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', 
+                         jdk: '', maven: 'maven', 
+                         mavenSettingsConfig: '', 
+                         traceability: true) {
+                // Add a step for your project’s build tool to release your artifact
+                sh 'mvn deploy'
+            }
+        }
         
         stage('Dockerhub Push') {
             steps {
