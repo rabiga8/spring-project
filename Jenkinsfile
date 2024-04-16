@@ -24,18 +24,28 @@ pipeline {
                 }
             }
         }
-
-        stage('Code coverage analysis') {
+        stage('Deploy - Staging') {
             steps {
-                withMaven(globalMavenSettingsConfig: '', 
-                          jdk: '', maven: 'maven', 
-                          mavenSettingsConfig: '', 
-                          traceability: true) {
-                    // Add a step for your project's build tool (e.g., Maven)
-                    sh 'mvn clean verify'
-                }
+                sh './deploy staging'
+                sh './run-smoke-tests'
             }
         }
+        stage('Deploy - Production') {
+            steps {
+                sh './deploy production'
+            }
+        }
+        // stage('Code coverage analysis') {
+        //     steps {
+        //         withMaven(globalMavenSettingsConfig: '', 
+        //                   jdk: '', maven: 'maven', 
+        //                   mavenSettingsConfig: '', 
+        //                   traceability: true) {
+        //             // Add a step for your project's build tool (e.g., Maven)
+        //             sh 'mvn clean verify'
+        //         }
+        //     }
+        // }
 
         stage('Code static analysis') {
             steps {
