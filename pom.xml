@@ -70,11 +70,9 @@
 	<!-- Add distribution management for deploying artifacts -->
 	<distributionManagement>
     		<repository>
-        		<uniqueVersion>false</uniqueVersion>
-		      <id>corp1</id>
-		      <name>Corporate Repository</name>
-		      <url>scp://repo/maven2</url>
-		      <layout>default</layout>
+        		<id>internal.repo</id>
+         		<name>Internal repo</name>
+         		<url>file:///home/thara/testesb/in</url>
     		</repository>
 	</distributionManagement>
 
