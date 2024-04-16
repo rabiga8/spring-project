@@ -11,17 +11,16 @@ pipeline {
                 sh "git clone https://github.com/rabiga8/spring-project.git"
                 sh "git checkout main"
             }
-            }
         }
 
         stage('Test') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
-                         jdk: '', maven: 'maven', 
-                         mavenSettingsConfig: '', 
-                         traceability: true) {
-                // Add a step for your project's build tool (e.g., Maven)
-                sh 'mvn test'
+                          jdk: '', maven: 'maven', 
+                          mavenSettingsConfig: '', 
+                          traceability: true) {
+                    // Add a step for your project's build tool (e.g., Maven)
+                    sh 'mvn test'
                 }
             }
         }
@@ -29,12 +28,11 @@ pipeline {
         stage('Code coverage analysis') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
-                         jdk: '', maven: 'maven', 
-                         mavenSettingsConfig: '', 
-                         traceability: true) {
-                    
-                // Add a step for your project's build tool (e.g., Maven)
-                sh 'mvn clean verify'
+                          jdk: '', maven: 'maven', 
+                          mavenSettingsConfig: '', 
+                          traceability: true) {
+                    // Add a step for your project's build tool (e.g., Maven)
+                    sh 'mvn clean verify'
                 }
             }
         }
@@ -42,31 +40,30 @@ pipeline {
         stage('Code static analysis') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
-                         jdk: '', maven: 'maven', 
-                         mavenSettingsConfig: '', 
-                         traceability: true) {
-                    
-                // Run Checkstyle
-                sh 'mvn checkstyle:checkstyle'
+                          jdk: '', maven: 'maven', 
+                          mavenSettingsConfig: '', 
+                          traceability: true) {
+                    // Run Checkstyle
+                    sh 'mvn checkstyle:checkstyle'
                 }
             }
         }
         
         stage('Build Maven Project') {
             steps {
-               withMaven(globalMavenSettingsConfig: '', 
-                         jdk: '', maven: 'maven', 
-                         mavenSettingsConfig: '', 
-                         traceability: true) {
-               sh 'mvn clean package'
-              }
+                withMaven(globalMavenSettingsConfig: '', 
+                          jdk: '', maven: 'maven', 
+                          mavenSettingsConfig: '', 
+                          traceability: true) {
+                    sh 'mvn clean package'
+                }
             }
         }
         
         stage('Build Docker Image') {
             steps {
                 // Build Docker image
-                sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
+                sh 'docker build -t ${DOCKER_IMAGE_NAME} .'
             }
         }
         
@@ -77,7 +74,8 @@ pipeline {
                     usernamePassword(
                         credentialsId: DOCKER_CREDENTIALS_ID, 
                         passwordVariable: 'DOCKER_PASSWORD', 
-                        usernameVariable: 'DOCKER_USERNAME')]) {
+                        usernameVariable: 'DOCKER_USERNAME')
+                ]) {
                     sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                 }
                 
@@ -85,18 +83,18 @@ pipeline {
                 sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
                 
                 // Tag the Docker image with Docker Hub repository name
-                sh 'docker tag rabiga8/group-image rabiga8/group-image:latest'
+                sh 'docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_IMAGE_NAME}:latest'
             }
         }
 
         stage('Deliver') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
-                         jdk: '', maven: 'maven', 
-                         mavenSettingsConfig: '', 
-                         traceability: true) {
-                // Add a step for your project’s build tool to release an artifact
-                sh 'mvn deploy'
+                          jdk: '', maven: 'maven', 
+                          mavenSettingsConfig: '', 
+                          traceability: true) {
+                    // Add a step for your project’s build tool to release an artifact
+                    sh 'mvn deploy'
                 }
             }
         }
@@ -104,7 +102,7 @@ pipeline {
         stage('Dockerhub Push') {
             steps {
                 // Push Docker image to Docker Hub
-                sh 'docker push rabiga8/group-image:latest'
+                sh 'docker push ${DOCKER_IMAGE_NAME}:latest'
             }
         }
     }
