@@ -67,4 +67,9 @@
 		</plugins>
 	</build>
 
+	<!-- Add distribution management for deploying artifacts -->
+	<distributionManagement>
+		
+	</distributionManagement>
+
 </project>
