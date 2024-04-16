@@ -11,6 +11,7 @@ pipeline {
                 sh "git clone https://github.com/rabiga8/spring-project.git"
                 sh "git checkout main"
             }
+            }
         }
 
         stage('Test') {
