@@ -24,28 +24,18 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy - Staging') {
-        //     steps {
-        //         sh './deploy staging'
-        //         sh './run-smoke-tests'
-        //     }
-        // }
-        stage('Deploy - Production') {
+
+        stage('Code coverage analysis') {
             steps {
-                sh './deploy production'
+                withMaven(globalMavenSettingsConfig: '', 
+                          jdk: '', maven: 'maven', 
+                          mavenSettingsConfig: '', 
+                          traceability: true) {
+                    // Add a step for your project's build tool (e.g., Maven)
+                    sh 'mvn clean verify'
+                }
             }
         }
-        // stage('Code coverage analysis') {
-        //     steps {
-        //         withMaven(globalMavenSettingsConfig: '', 
-        //                   jdk: '', maven: 'maven', 
-        //                   mavenSettingsConfig: '', 
-        //                   traceability: true) {
-        //             // Add a step for your project's build tool (e.g., Maven)
-        //             sh 'mvn clean verify'
-        //         }
-        //     }
-        // }
 
         stage('Code static analysis') {
             steps {
@@ -59,13 +49,13 @@ pipeline {
             }
         }
         
-        stage('Build Maven Project') {
+        stage('Build Maven Install') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
                           jdk: '', maven: 'maven', 
                           mavenSettingsConfig: '', 
                           traceability: true) {
-                    sh 'mvn clean package'
+                    sh 'mvn clean install'
                 }
             }
         }
@@ -97,23 +87,23 @@ pipeline {
             }
         }
 
-        stage('Deliver') {
-            steps {
-                withMaven(globalMavenSettingsConfig: '', 
-                          jdk: '', maven: 'maven', 
-                          mavenSettingsConfig: '', 
-                          traceability: true) {
-                    // Add a step for your project’s build tool to release an artifact
-                    sh 'mvn deploy'
-                }
-            }
-        }
+        // stage('Deliver') {
+        //     steps {
+        //         withMaven(globalMavenSettingsConfig: '', 
+        //                   jdk: '', maven: 'maven', 
+        //                   mavenSettingsConfig: '', 
+        //                   traceability: true) {
+        //             // Add a step for your project’s build tool to release an artifact
+        //             sh 'mvn deploy'
+        //         }
+        //     }
+        // }
         
-        stage('Dockerhub Push') {
-            steps {
-                // Push Docker image to Docker Hub
-                sh 'docker push ${DOCKER_IMAGE_NAME}:latest'
-            }
-        }
+        // stage('Dockerhub Push') {
+        //     steps {
+        //         // Push Docker image to Docker Hub
+        //         sh 'docker push ${DOCKER_IMAGE_NAME}:latest'
+        //     }
+        // }
     }
 }
