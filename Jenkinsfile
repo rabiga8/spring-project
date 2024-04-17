@@ -49,14 +49,26 @@ pipeline {
             }
         }
         
-        stage('Build Maven Install') {
+        stage('Build Maven') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', 
                           jdk: '', maven: 'maven', 
                           mavenSettingsConfig: '', 
                           traceability: true) {
-                    sh 'mvn clean install'
+                    sh 'mvn clean package'
                 }
+                post{
+                    success{
+                        echo"Archiving artifacts"
+                        archiveArtifacts artifacts: '**/target/*.jar'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Tomcat server'){
+            steps{
+                deploy adapters: [tomcat9(credentialsId: 'b53a8e69-9559-416f-a883-ffb83f8a9a3c', path: '', url: 'http://localhost:9999/')], contextPath: null, war: '**/target/*.jar'
             }
         }
         
@@ -87,7 +99,7 @@ pipeline {
             }
         }
 
-        // stage('Deliver') {
+        // stage('Deploy to Tomcat') {
         //     steps {
         //         withMaven(globalMavenSettingsConfig: '', 
         //                   jdk: '', maven: 'maven', 
