@@ -66,12 +66,24 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-			  	<artifactId>maven-war-plugin</artifactId>
-			  	<version>2.2</version>
-			  	<configuration>
-			    		<failOnMissingWebXml>false</failOnMissingWebXml>
-			  	</configuration>
+			    <artifactId>maven-war-plugin</artifactId>
+			    <version>2.6</version>
+			    <configuration>
+			        <warName>${applicationContextName}</warName>
+			        <packagingExcludes>
+			            AFolder,
+			            aFile.xml
+			        </packagingExcludes>
+			    </configuration>
+			    <executions>
+			        <execution>
+			            <id>default-war</id>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>war</goal>
+			            </goals>
+			        </execution>
+			    </executions>
 			</plugin>
 
 			
