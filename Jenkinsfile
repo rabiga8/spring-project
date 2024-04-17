@@ -57,14 +57,15 @@ pipeline {
                           traceability: true) {
                     sh 'mvn clean package'
                 }
-                post{
-                    success{
-                        echo"Archiving artifacts"
-                        archiveArtifacts artifacts: '**/target/*.jar'
-                    }
+            }
+            post {
+                success {
+                    echo "Archiving artifacts"
+                    archiveArtifacts artifacts: '**/target/*.jar'
                 }
             }
         }
+
 
         stage('Deploy to Tomcat server'){
             steps{
