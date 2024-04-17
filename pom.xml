@@ -64,21 +64,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+			  	<artifactId>maven-war-plugin</artifactId>
+			  	<version>2.2</version>
+			  	<configuration>
+			    		<failOnMissingWebXml>false</failOnMissingWebXml>
+			  	</configuration>
+			</plugin>
+
+			
 		</plugins>
 	</build>
 
-	<!-- Add distribution management for deploying artifacts -->
-	<distributionManagement>
-    		<repository>
-  			<id>maven-feed</id>
-  			<url>https://pkgs.dev.azure.com/rabdikerWGNGkSQH/group-project/_packaging/maven-feed/maven/v1</url>
-	  		<releases>
-	    			<enabled>true</enabled>
-	  		</releases>
-	  		<snapshots>
-	    			<enabled>true</enabled>
-	  		</snapshots>
-		</repository>
-</distributionManagement>
 
 </project>
