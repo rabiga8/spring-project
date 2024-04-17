@@ -61,7 +61,7 @@ pipeline {
             post {
                 success {
                     echo "Archiving artifacts"
-                    archiveArtifacts artifacts: '**/target/*.jar'
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
         }
@@ -69,36 +69,36 @@ pipeline {
 
         stage('Deploy to Tomcat server'){
             steps{
-                deploy adapters: [tomcat9(credentialsId: 'b53a8e69-9559-416f-a883-ffb83f8a9a3c', path: '', url: 'http://localhost:9999/')], contextPath: null, war: '**/target/*.jar'
+                deploy adapters: [tomcat9(credentialsId: 'b53a8e69-9559-416f-a883-ffb83f8a9a3c', path: '', url: 'http://localhost:9999/')], contextPath: null, war: '**/target/*.war'
             }
         }
         
-        stage('Build Docker Image') {
-            steps {
-                // Build Docker image
-                sh 'docker build -t ${DOCKER_IMAGE_NAME} .'
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         // Build Docker image
+        //         sh 'docker build -t ${DOCKER_IMAGE_NAME} .'
+        //     }
+        // }
         
-        stage('Dockerhub Login') {
-            steps {
-                // Authenticate with Docker Hub using credentials
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: DOCKER_CREDENTIALS_ID, 
-                        passwordVariable: 'DOCKER_PASSWORD', 
-                        usernameVariable: 'DOCKER_USERNAME')
-                ]) {
-                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                }
+        // stage('Dockerhub Login') {
+        //     steps {
+        //         // Authenticate with Docker Hub using credentials
+        //         withCredentials([
+        //             usernamePassword(
+        //                 credentialsId: DOCKER_CREDENTIALS_ID, 
+        //                 passwordVariable: 'DOCKER_PASSWORD', 
+        //                 usernameVariable: 'DOCKER_USERNAME')
+        //         ]) {
+        //             sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+        //         }
                 
-                // Build Docker image again
-                sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
+        //         // Build Docker image again
+        //         sh 'docker build  -t ${DOCKER_IMAGE_NAME} .'
                 
-                // Tag the Docker image with Docker Hub repository name
-                sh 'docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_IMAGE_NAME}:latest'
-            }
-        }
+        //         // Tag the Docker image with Docker Hub repository name
+        //         sh 'docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_IMAGE_NAME}:latest'
+        //     }
+        // }
 
         // stage('Deploy to Tomcat') {
         //     steps {
